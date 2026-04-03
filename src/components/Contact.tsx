@@ -9,6 +9,27 @@ interface ContactProps {
 export default function Contact({ currentLang }: ContactProps) {
   const t = translations[currentLang].contact;
 
+  // --- FUNKCIJA KOJA REŠAVA PROBLEM SLANJA ---
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData as any).toString(),
+    })
+      .then(() => {
+        alert("Poruka je uspešno poslata!");
+        form.reset(); // Čisti formu nakon slanja
+      })
+      .catch((error) => {
+        alert("Greška pri slanju: " + error);
+      });
+  };
+  // ------------------------------------------
+
   return (
     <section id="contact" className="py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,14 +84,14 @@ export default function Contact({ currentLang }: ContactProps) {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <div className="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-slate-100">
-              {/* IZMENJENO: Dodati Netlify atributi i uklonjen onSubmit blokator */}
               <form 
                 name="contact" 
                 method="POST" 
                 data-netlify="true" 
+                onSubmit={handleSubmit}
                 className="space-y-6"
               >
-                {/* OBAVEZNO ZA NETLIFY + REACT */}
+                {/* OVO JE KLJUČNO ZA NETLIFY RECOGNITION */}
                 <input type="hidden" name="form-name" value="contact" />
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -84,7 +105,7 @@ export default function Contact({ currentLang }: ContactProps) {
                       name="name"
                       required
                       className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
-                      placeholder="John Doe"
+                      placeholder="Ime i prezime"
                     />
                   </div>
                   <div>
@@ -97,7 +118,7 @@ export default function Contact({ currentLang }: ContactProps) {
                       name="email"
                       required
                       className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
-                      placeholder="john@example.com"
+                      placeholder="vass@email.com"
                     />
                   </div>
                 </div>
@@ -111,7 +132,7 @@ export default function Contact({ currentLang }: ContactProps) {
                     rows={5}
                     required
                     className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all resize-none"
-                    placeholder="How can we help you?"
+                    placeholder="Kako možemo da vam pomognemo?"
                   ></textarea>
                 </div>
                 <button
