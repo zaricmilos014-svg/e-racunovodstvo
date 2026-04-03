@@ -40,15 +40,25 @@ export default function Hero({ currentLang }: HeroProps) {
             </p>
           </div>
 
-          {/* Right Column - Form */}
+          {/* Right Column - Form (POPRAVLJENA) */}
           <div className="lg:ml-auto w-full max-w-md">
             <div className="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-xl shadow-2xl">
-              <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+              <form 
+                name="contact" 
+                method="POST" 
+                data-netlify="true" 
+                className="space-y-5"
+              >
+                {/* Netlify identifikacija */}
+                <input type="hidden" name="form-name" value="contact" />
+                
                 <div>
                   <div className="flex items-center border-b border-white/30 py-2">
                     <span className="text-white/60 mr-3">👤</span>
                     <input
                       type="text"
+                      name="name"
+                      required
                       className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none placeholder-white/60"
                       placeholder={t.form.name}
                     />
@@ -59,6 +69,8 @@ export default function Hero({ currentLang }: HeroProps) {
                     <span className="text-white/60 mr-3">✉️</span>
                     <input
                       type="email"
+                      name="email"
+                      required
                       className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none placeholder-white/60"
                       placeholder={t.form.email}
                     />
@@ -67,7 +79,9 @@ export default function Hero({ currentLang }: HeroProps) {
                 <div>
                   <div className="flex items-start border-b border-white/30 py-2">
                     <textarea
+                      name="message"
                       rows={3}
+                      required
                       className="appearance-none bg-transparent border-none w-full text-white py-1 px-2 leading-tight focus:outline-none placeholder-white/60 resize-none"
                       placeholder={t.form.message}
                     ></textarea>
